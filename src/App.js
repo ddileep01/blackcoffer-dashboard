@@ -5,6 +5,25 @@ import {PieChart, Pie, Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, B
 
 const App = () => {
 
+  function updateChart(){
+  async function fetchData(){
+    const url="https://retoolapi.dev/iPqAyo/data_api";
+    const response = await fetch(url);
+    const datapoints = await response.json();
+    console.log(datapoints);
+    return datapoints;
+  };
+
+  fetchData().then(datapoints => {
+    const year = datapoints.start_year.map(function(index){
+      return index.start_year;
+    })
+    console.log(year);
+
+    PieChart.data = year;
+    PieChart.update();
+  });
+  }
   const data = [
     {name:"Google", users:533524, revenue:5227124},
     {name:"Twitter", users:412534, revenue:2441133},
@@ -62,8 +81,8 @@ const App = () => {
           <Line type="monotone" dataKey="users" stroke="#8884d8" activeDot={{ r: 8 }} />
           <Line type="monotone" dataKey="revenue" stroke="#82ca9d" />
         </LineChart>
-
-
+          <br />
+          <button onClick={updateChart}>Fetch Now</button>
     </div>
     </>
   );
