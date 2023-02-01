@@ -1,91 +1,62 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import './App.css';
+import Graphs from './Component/Graphs';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import NavBar from './Component/NavBar';
+import ProfileCard from './Component/ProfileCard';
+import ActiveCard from './Component/ActiveCard'; 
+import LeftDashBoard from './Component/LeftDashBoard';
+import BookingCard from './Component/BookingCard'; 
+import ParaCard from './Component/ParaCard';
+import SoundBar from './Component/SoundBar'; 
+import BookingCardT from './Component/BookingCardT';
 import {PieChart, Pie, Tooltip, BarChart, XAxis, YAxis, Legend, CartesianGrid, Bar, LineChart, Line} from "recharts";
 
 
-const App = () => {
 
-  function updateChart(){
-  async function fetchData(){
-    const url="https://retoolapi.dev/iPqAyo/data_api";
-    const response = await fetch(url);
-    const datapoints = await response.json();
-    console.log(datapoints);
-    return datapoints;
-  };
 
-  fetchData().then(datapoints => {
-    const year = datapoints.start_year.map(function(index){
-      return index.start_year;
-    })
-    console.log(year);
 
-    PieChart.data = year;
-    PieChart.update();
-  });
-  }
-  const data = [
-    {name:"Google", users:533524, revenue:5227124},
-    {name:"Twitter", users:412534, revenue:2441133},
-    {name:"instagram", users:912534, revenue:5857212},
-    {name:"Telegram", users:255454, revenue:1555824},
-    {name:"Whatsapp", users:2213334, revenue:3152154},
-  ]
+const App = () => { 
 
-  return (
-    <>
-    <h1 style={{textAlign:"center"}}>Social Network Users</h1>
-    <div className="App">
-    <PieChart width={400} height={400}>
-        <Pie data={data} dataKey="users" cx="50%" cy="50%" outerRadius={60} fill="#8884d8" />
-        <Pie data={data} dataKey="revenue" cx="50%" cy="50%" innerRadius={70} outerRadius={90} fill="#82ca9d" label />
-    <Tooltip/>
-    </PieChart>
+  const [data, setData] = useState([])
+  
+  useEffect(() => {
+      fetch('https://retoolapi.dev/DZybHH/data_api2').then(
+        response => response.json()
+      ).then(json => setData(json))
+  },[]) 
 
-    <BarChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="users" fill="#8884d8" />
-          <Bar dataKey="revenue" fill="#82ca9d" />
-        </BarChart>
+  
 
-        <LineChart
-          width={500}
-          height={300}
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="users" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="revenue" stroke="#82ca9d" />
-        </LineChart>
-          <br />
-          <button onClick={updateChart}>Fetch Now</button>
+  
+  
+  return( 
+    
+    
+    
+    
+    <div className='bg'>
+      <LeftDashBoard/>
+      <div className='second-bg'>
+        <ProfileCard/>
+        <ParaCard/>
+        <div className='s-row'>
+          <BookingCard/>
+          <BookingCardT/>
+        </div>
+        <div className='s-row2'>
+          <BookingCard/>
+          <BookingCardT/>
+        </div>
+        <Graphs dataSet = {data}/>
+        
+      </div>
+
+      
     </div>
-    </>
-  );
-};
+  )
+}
+
+  
 
 export default App;
